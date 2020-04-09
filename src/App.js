@@ -1,5 +1,7 @@
 import React from 'react';
 
-const App = () => <p>Hello!</p>
+import StoriesContainer from './containers/StoriesContainer';
+
+const App = () => <StoriesContainer/>
 
 export default App;
