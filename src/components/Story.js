@@ -1,22 +1,40 @@
 import React, { useState, useEffect } from 'react'
-import { storyUrl, getStory } from '../services/hnApi';
+import { getStory } from '../services/hnApi';
 
+import { StoryWrapper, StoryTitle, StoryMetaElement, StoryMeta } from '../styles/Story';
+
+import {mapTime} from '../mappers/mapTime';
 
 const Story = ({ storyId }) => {
     const [story, setStory] = useState({});
 
     useEffect(() => {
         getStory(storyId).then(data => data && data.url && setStory(data));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log('story', story)
+
     return story && story.url ? (
-        JSON.stringify(story)
-        // <>
-        //     <a href={story.url}> <p> {story.title} </p> </a>
-        // By: <p>{story.by}</p>
-        // Posted: <p>{story.time}</p>
-        // </>
-    ): null;
+        <StoryWrapper data-testid="story">
+            <StoryTitle>
+                <a href={story.url}> {story.title}  </a>
+            </StoryTitle>
+            <StoryMeta>
+                <span data-testid="story-by">
+                    <StoryMetaElement color="#000">
+                        By: {` `}
+                    </StoryMetaElement>
+                    {story.by}
+                </span>
+                <span data-testid="story-time">
+                    <StoryMetaElement color="#000">
+                        Posted:
+                    </StoryMetaElement>
+                    {` `}
+                    {mapTime(story.time)}
+                </span>
+            </StoryMeta>
+        </StoryWrapper>
+    ) : null;
 };
 
 export default Story;
